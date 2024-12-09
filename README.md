@@ -71,13 +71,6 @@ Install Java:
 sudo apt update
 sudo apt install openjdk-11-jdk -y
 java -version  # To verify installation
-```
-
-Install Maven:
-```bash
-sudo apt install maven -y
-mvn -version  # To verify installation
-```
 
 Install Spark 3.4.1:
 
@@ -164,7 +157,13 @@ $SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --depl
 Replace ip with the our IP address of the Spark master instance.
 
  you should get the output in this manner
+
+
+ 
  ![Screenshot 2024-12-09 153516](https://github.com/user-attachments/assets/63903a1d-78e8-467f-9ab5-2a8afa188b60)
+
+
+
 
 ```bash
 $SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --deploy-mode client --executor-memory 2G --total-executor-cores 4 /home/ubuntu/Predictor.jar
