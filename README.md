@@ -25,10 +25,10 @@ Make sure to note down the output of the `cat ~/.ssh/id_rsa.pub` command, as you
 ### 3. Add Public Keys to `authorized_keys` on All 4 Instances
 On each instance, execute the following:
 
-1. Open the `authorized_keys` file in `vim`:
+1. Open the `authorized_keys` using nano:
 
 ```bash
-vim ~/.ssh/authorized_keys
+nano ~/.ssh/authorized_keys
 ```
 
 2. Copy and paste the public keys from all 4 instances into this file. Each key should be on a new line.
@@ -44,10 +44,10 @@ On each instance, add the following entries to `/etc/hosts` to define hostnames 
 cd
 ```
 
-2. Open the `/etc/hosts` file in `vim`:
+2. Open the `/etc/hosts` file in `nano`:
 
 ```bash
-sudo vim /etc/hosts
+sudo nano /etc/hosts
 ```
 
 3. Add the following lines:
@@ -110,10 +110,10 @@ cp $SPARK_HOME/conf/workers.template $SPARK_HOME/conf/workers
 ---
 
 ### 7. Edit `workers` File
-Open the `workers` file in `vim` and add the following lines after `localhost`:
+Open the `workers` file in `nano` and add the following lines after `localhost`:
 
 ```bash
-vim $SPARK_HOME/conf/workers
+nano $SPARK_HOME/conf/workers
 ```
 
 Add the following (replace `dd1/ip-address`, `dd2/ip-address`, `dd3/ip-address` with the actual IP addresses of your instances):
@@ -127,8 +127,7 @@ dd3/ip-address
 
 ---
 
-### 8. Install Spark 3.4.1, Java, and Maven
-Ensure that Spark, Java, and Maven are installed on all the instances as explained above.
+### 8. Install Spark 3.4.3, Java.
 
 ---
 
@@ -136,24 +135,40 @@ Ensure that Spark, Java, and Maven are installed on all the instances as explain
 On each instance, create two folders named `Training` and `Eval`:
 
 ```bash
-mkdir ~/Training
-mkdir ~/Eval
+mkdir /opt/Project
 ```
+use touch command to create a ModelTrainer.java and Predictor.java
 
-Place the respective Java code files (for training and evaluation) inside these folders.
+Paste respective Java code files (for training and evaluation) inside these folders.
 
 ---
+
 
 ### 10. Run the Training Code in Parallel Using `spark-submit`
 To run your training code using `spark-submit` on all instances in parallel, use the following command:
 
 ```bash
-spark-submit --master spark://<master-ip>:7077 --class com.example.WineQualityEval /home/ubuntu/Training/wine-quality-train-1.0-SNAPSHOT.jar
+$SPARK_HOME/bin/spark-submit --class ModelTrainer --master spark://master-ip --deploy-mode client --executor-memory 2G --total-executor-cores 4 /opt/ModelTrainer.jar
 ```
 
-Replace `<master-ip>` with the actual IP address of the Spark master instance.
+Replace ip with the your IP address of the Spark master instance.
 
 ---
+### 10.1 Run the Predictor Using `spark-submit`
+To run your training code using `spark-submit` on all instances in parallel, use the following command:
+
+```bash
+$SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --deploy-mode client --executor-memory 2G --total-executor-cores 4 /home/ubuntu/Predictor.jar
+```
+
+Replace ip with the our IP address of the Spark master instance.
+
+ you should get the output in this manner
+ ![Screenshot 2024-12-09 153516](https://github.com/user-attachments/assets/63903a1d-78e8-467f-9ab5-2a8afa188b60)
+
+```bash
+$SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --deploy-mode client --executor-memory 2G --total-executor-cores 4 /home/ubuntu/Predictor.jar
+```
 
 ### 11. Create a Docker Image
 Once your code is ready and everything is configured, create a Docker image. Here’s the `Dockerfile` we previously worked on:
