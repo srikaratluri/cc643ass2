@@ -203,49 +203,37 @@ CMD ["/opt/spark/bin/spark-submit", "--class", "Predictor", "--master", "local[*
 
 
 
-
-
----
-
-### 12. Push the Docker Image
-Once the image is built, you can push it to Docker Hub:
-
-```bash
-sudo docker push srikarAtluri/wine-quality-eval:latest
-```
-
-Make sure you're logged in to Docker Hub using:
-
-```bash
-sudo docker login
-```
-
----
-
-### 13. Pull the Docker Image on Desired Instances
-To pull the image on the desired instances, run the following command on each instance:
-
-```bash
-sudo docker pull srikarAtluri/wine-quality-eval:latest
-```
-
----
-
-### 14. Run the Docker Container
+### 12. Run the Docker Container
 Once the image is pulled, you can run it with:
 
 ```bash
-sudo docker run -it --entrypoint /bin/bash srikarAtluri/wine-quality-eval:latest
+sudo docker build -t wine-quality-predictor .
+sudo docker run --rm -it -v /home/ubuntu/wine_quality_model:/app/wine_quality_model wine-quality-predictor
 ```
-
 This will start the container and open a bash shell inside the container. You can then execute any further commands required.
 
 ---
 
-### 15. Run the Spark Job in Docker
-To run the Spark job within the Docker container, use the following command:
+---
+
+
+### 13. Push the Docker Image
+Once the image is built, you can push it to Docker Hub:
+```bash
+sudo docker login
+```
 
 ```bash
-spark-submit --master spark://<master-ip>:7077 --class com.example.WineQualityEval /app/WineQualityEval/target/wine-quality-eval-1.0-SNAPSHOT.jar
+sudo docker push srikaratluri3010/wine-quality-predictor:latest
 ```
+
+Make sure you're logged in to Docker Hub using:
+
+
+
+---
+---
+
+
+
 
