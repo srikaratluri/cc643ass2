@@ -224,11 +224,18 @@ sudo docker login
 ```
 
 ```bash
+sudo docker images
+```
+look into the images and check for the tag 
+
+```bash
 sudo docker push srikaratluri3010/wine-quality-predictor:latest
 ```
 
 Make sure you're logged in to Docker Hub using:
 
+
+![Screenshot 2024-12-09 215516](https://github.com/user-attachments/assets/cf60012b-7b49-417f-979b-a3ef831759aa)
 
 
 ---
