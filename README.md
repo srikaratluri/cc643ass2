@@ -170,7 +170,7 @@ $SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --depl
 ```
 
 ### 11. Create a Docker Image
-'''
+```
 FROM openjdk:21-jdk-slim
 WORKDIR /app
 RUN apt-get update && apt-get install -y apt-utils wget unzip
@@ -188,7 +188,7 @@ COPY classes /app/classes
 COPY wine_quality_model /app/wine_quality_model
 CMD ["/opt/spark/bin/spark-submit", "--class", "Predictor", "--master", "local[*]", "/app/Predictor.jar"]
 
-'''
+```
 
 
 
