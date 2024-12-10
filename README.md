@@ -170,22 +170,16 @@ $SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --depl
 ```
 
 ### 11. Create a Docker Image
+'''
 FROM openjdk:21-jdk-slim
-# Set the working directory
 WORKDIR /app
 RUN apt-get update && apt-get install -y apt-utils wget unzip
-
-# Install Apache Spark
 RUN wget https://dlcdn.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz && \
     tar -xvzf spark-3.5.3-bin-hadoop3.tgz && \
     mv spark-3.5.3-bin-hadoop3 /opt/spark && \
     rm spark-3.5.3-bin-hadoop3.tgz
-
-# Set environment variables
 ENV SPARK_HOME=/opt/spark
 ENV PATH="$SPARK_HOME/bin:$PATH"
-
-# Copy all necessary files into the container
 COPY Predictor.jar /app/Predictor.jar
 COPY TrainingDataset.csv /app/TrainingDataset.csv
 COPY ValidationDataset.csv /app/ValidationDataset.csv
@@ -194,7 +188,7 @@ COPY classes /app/classes
 COPY wine_quality_model /app/wine_quality_model
 CMD ["/opt/spark/bin/spark-submit", "--class", "Predictor", "--master", "local[*]", "/app/Predictor.jar"]
 
-
+'''
 
 
 
@@ -210,17 +204,6 @@ CMD ["/opt/spark/bin/spark-submit", "--class", "Predictor", "--master", "local[*
 
 
 
-
-
-
-
-
-
-
-
-
-
-```
 
 ---
 
