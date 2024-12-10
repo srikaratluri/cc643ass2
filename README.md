@@ -63,30 +63,30 @@ Replace `<ip-address>` with the actual IP addresses of your instances.
 
 ---
 
-### 5. Install Java, Maven, and Spark 3.4.1 on All 4 Instances
+### 5. Install Java,Spark 3.5.3 on All 4 Instances
 On each instance, install Java, Maven, and Spark as follows:
 
 Install Java:
 ```bash
 sudo apt update
-sudo apt install openjdk-11-jdk -y
+sudo apt install default-jdk -y
 java -version  # To verify installation
 
-Install Spark 3.4.1:
+Install Spark 3.5.3:
 
 1. Download Spark from the official link (e.g., Spark 3.4.1):
 ```bash
-wget https://archive.apache.org/dist/spark/spark-3.4.1/spark-3.4.1-bin-hadoop3.2.tgz
+wget https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz
 ```
 
 2. Extract Spark:
 ```bash
-tar -xvzf spark-3.4.1-bin-hadoop3.2.tgz
+tar -xvzf spark-3.5.5-bin-hadoop3.2.tgz
 ```
 
 3. Set Spark environment variables:
 ```bash
-echo "export SPARK_HOME=/home/ubuntu/spark-3.4.1-bin-hadoop3.2" >> ~/.bashrc
+echo "export SPARK_HOME=/home/ubuntu/spark-3.5.3-bin-hadoop3" >> ~/.bashrc
 echo "export PATH=\$SPARK_HOME/bin:\$PATH" >> ~/.bashrc
 source ~/.bashrc
 ```
