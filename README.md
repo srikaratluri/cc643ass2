@@ -170,32 +170,56 @@ $SPARK_HOME/bin/spark-submit --class Predictor --master spark://master-ip --depl
 ```
 
 ### 11. Create a Docker Image
-Once your code is ready and everything is configured, create a Docker image. Here’s the `Dockerfile` we previously worked on:
-
-```dockerfile
-# Use the official Spark image as a base image
-FROM bitnami/spark:3.4.1
-
-# Set the working directory inside the container
+FROM openjdk:21-jdk-slim
+# Set the working directory
 WORKDIR /app
+RUN apt-get update && apt-get install -y apt-utils wget unzip
 
-# Copy WineQualityEval (containing the JAR) to the container
-COPY WineQualityEval /app/WineQualityEval
+# Install Apache Spark
+RUN wget https://dlcdn.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz && \
+    tar -xvzf spark-3.5.3-bin-hadoop3.tgz && \
+    mv spark-3.5.3-bin-hadoop3 /opt/spark && \
+    rm spark-3.5.3-bin-hadoop3.tgz
 
-# Copy WineQualityPredictionModel to /home/ubuntu (matching the JAR's expected path)
-COPY WineQualityPredictionModel /home/ubuntu/WineQualityPredictionModel
+# Set environment variables
+ENV SPARK_HOME=/opt/spark
+ENV PATH="$SPARK_HOME/bin:$PATH"
 
-# Copy ValidationDataset.csv to /home/ubuntu (matching the JAR's expected path)
-COPY ValidationDataset.csv /home/ubuntu/ValidationDataset.csv
+# Copy all necessary files into the container
+COPY Predictor.jar /app/Predictor.jar
+COPY TrainingDataset.csv /app/TrainingDataset.csv
+COPY ValidationDataset.csv /app/ValidationDataset.csv
+COPY app /app/app
+COPY classes /app/classes
+COPY wine_quality_model /app/wine_quality_model
+CMD ["/opt/spark/bin/spark-submit", "--class", "Predictor", "--master", "local[*]", "/app/Predictor.jar"]
 
-# Set the command to run your Spark job using spark-submit
-CMD ["spark-submit", "--master", "local", "--class", "com.example.WineQualityEval", "/app/WineQualityEval/target/wine-quality-eval-1.0-SNAPSHOT.jar"]
-```
 
-To build the Docker image, run:
 
-```bash
-sudo docker build -t srikarAtluri/wine-quality-eval:latest .
+
+
+
+
+![Screenshot 2024-12-09 220031](https://github.com/user-attachments/assets/81a3eac9-c527-4535-a01a-9354eec361ba)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ---
